@@ -9,5 +9,25 @@ const productSchema = mongoose.Schema({
 
 const Productmodel = mongoose.model("product",productSchema)
 
+const cartSchema = mongoose.Schema({
+    "image":String,
+    "title":String,
+    "price":String,
+    "review":String,
+    "productID":String,
+    "number":String
+})
 
-module.exports = {Productmodel}
+const Cartmodel = mongoose.model("cart",cartSchema)
+
+
+
+
+
+module.exports = {Productmodel,Cartmodel}
+
+
+// { "image": "https://cdn.shopclues.com/images/banners/view_all_demo.jpg",
+//     "s": "View All",
+//     "row href": ""
+//   },
