@@ -1,12 +1,29 @@
 const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
-    "name":String,
+    "number":String,
     "email":String,
-    "Password":String,
-    "gender":String
+    "password":String,
+    "otp":String
 })
 
 const Usermodel = mongoose.model("user",userSchema)
 
-module.exports = {Usermodel}
+
+const otpSchema = mongoose.Schema({
+    "otp":String,
+    "number":String,
+    "email":String
+})
+const Otpmodel = mongoose.model("otp",otpSchema)
+
+
+const loginOtp = mongoose.Schema({
+    "otp":String,
+    "number":String,
+    "email":String,
+})
+
+const Loginotpmodel = mongoose.model("login_otp",loginOtp)
+
+module.exports = {Usermodel,Otpmodel,Loginotpmodel}
