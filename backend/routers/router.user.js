@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 const otpGenerator = require('otp-generator')
 const {Otpmodel,Loginotpmodel,Usermodel} = require("../models/model.users")
-
 const user_route = express.Router()
 
 user_route.post("/register",async(req,res)=>{
@@ -75,6 +74,7 @@ user_route.post("/register/:otp",async(req,res)=>{
 
 user_route.post("/login",async (req,res)=>{
    const user_data =req.body;
+   console.log(user_data)
     try {
         var data = await Usermodel.find({number:user_data.number})
         if(data.length>0)
@@ -99,6 +99,7 @@ user_route.post("/login",async (req,res)=>{
 
 user_route.post("/login/:id",async(req,res)=>{
     try {
+        
         var data = await Loginotpmodel.find()
         console.log(data,req.params.id)
         if(req.params.id==data[0].otp)

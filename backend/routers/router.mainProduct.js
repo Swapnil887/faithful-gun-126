@@ -14,12 +14,24 @@ mainProductRoute.get("/get",async(req,res)=>{
     }
 })
 
+mainProductRoute.post("/post",async (req,res)=>{
+    const data = req.body;
+    try {
+        const all_data = await Productmodel.insertMany(data)
+        res.send("Data added...")
+    } catch (error) {
+        console.log(error);
+        res.send("something went wrong while admin want to post data")
+    }
+})
+
 mainProductRoute.patch("/update/:product_id",async(req,res)=>{
     var id = req.params.product_id;
     
     console.log(id)
     try {
         var data = await Productmodel.updateMany({_id:id},req.body)
+        var cart_data = await Cartmodel.updateMany({productID:id},req.body)
         res.send("product updated")
     } catch (error) {
         console.log(error)
