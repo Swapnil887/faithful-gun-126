@@ -5,6 +5,7 @@ const {adminRouter} = require("./routers/router.admin")
 const {mainProductRoute} = require("./routers/router.mainProduct");
 const {validate} = require("./midlewears/middlewear.otp");
 const {user_product_route} = require("./routers/router.user.product")
+require("dotenv").config()
 
 const app = express()
 app.use(express.json())
