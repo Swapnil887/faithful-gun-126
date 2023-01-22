@@ -4,12 +4,13 @@ const {user_route} = require("./routers/router.user")
 const {adminRouter} = require("./routers/router.admin")
 const {mainProductRoute} = require("./routers/router.mainProduct");
 const {validate} = require("./midlewears/middlewear.otp");
-const {user_product_route} = require("./routers/router.user.product")
+const {user_product_route} = require("./routers/router.user.product");
+const cors = require("cors")
 require("dotenv").config()
 
 const app = express()
 app.use(express.json())
-
+app.use(cors({origin:"*"}))
 
 app.use("/user",user_route)
 app.use("/userproduct",user_product_route)
