@@ -1,10 +1,11 @@
 const express = require("express");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const { Usermodel, Loginotpmodel } = require("../models/model.users");
 
 const mainProductRoute = express.Router()
 
 
-const validate = (req, res, next) => {
+const validate =async (req, res, next) => {
     const token = req.headers.authorization;
     try {
 
@@ -17,11 +18,13 @@ const validate = (req, res, next) => {
             }
 
             else {
-                res.send("you are not authorized")
+                await Loginotpmodel.deleteMany()
+                res.json("you are not authorized")
             }
         }
         else {
-            res.send("you are not authorized")
+            await Loginotpmodel.deleteMany()
+            res.json("you are not authorized")
         }
 
 

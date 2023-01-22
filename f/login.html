@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log In</title>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital@1&family=Roboto&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background-color: rgba(38, 164, 182, 0.2);
+        font-family: "Open Sans", sans-serif;
+
+        font-family: "Roboto", sans-serif;
+      }
+      main {
+        width: 55%; /*change later*/
+        height: 70vh;
+        margin: 10vh auto;
+        background-color: white;
+        display: flex;
+        border-radius: 1%;
+        
+      }
+      main > div {
+        height: 100%;
+        
+      }
+      main div img {
+        height: 100%;
+        border-radius: 3%;
+      }
+      main > div:nth-child(2) {
+        width: 60%;
+        padding-left: 4%;
+        padding-top: 5%;
+        color: rgb(149, 149, 149);
+        border: 1px solid transparent;
+      }
+      main > div:nth-child(2) > form > h3 {
+       
+      }
+      /* main > div:nth-child(2) > form > h3:hover {
+        color: rgb(38, 164, 182);
+        text-decoration: underline;
+      } */
+      main > div:nth-child(2) > form > label {
+        margin-bottom: 0;
+        display: block;
+      }
+      /* main > div:nth-child(2) > form > label:hover {
+        color: rgb(38, 164, 182);
+        font-size: 80%;
+      } */
+      main > div:nth-child(2) > form > input {
+        border: 0;
+        border-bottom: 1px solid rgb(149, 149, 149);
+        width: 100%; /*change accordingly*/
+        height: fit-content;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        height: 20px;
+      }
+      /* main > div:nth-child(2) > form > input:hover {
+        border: 0px;
+        border-bottom: 2px solid rgb(38, 164, 182);
+        height: 150%;
+        margin-bottom: 10px;
+      } */
+      #submit {
+        background-color: rgba(255, 133, 81);
+        border: 0;
+        width: 100%;
+        height: auto;
+        align-items: center;
+        border-radius: 5px;
+        font-size: 5mm;
+        cursor: pointer;
+       
+      }
+      #submit:hover {
+        background-color: rgba(255, 101, 94);
+      }
+      #register {
+        background-color: rgba(255, 133, 81);
+        border: 0;
+        width: 100%;
+        height: auto;
+        align-items: center;
+        border-radius: 5px;
+        font-size: 5mm;
+        cursor: pointer;
+        
+      }
+      #register:hover {
+        background-color: rgba(255, 101, 94);
+      }
+
+      #otp {
+        background-color: rgba(255, 133, 81);
+        border: 0;
+        width: 100%;
+        height: auto;
+        align-items: center;
+        border-radius: 5px;
+        font-size: 5mm;
+        cursor: pointer;
+        
+      }
+      #otp:hover {
+        background-color: rgba(255, 101, 94);
+      }
+
+      #myform{
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* button span {
+        font-size: 150%;
+        font-weight: bolder;
+        color: white;
+        background-color: blue;
+        padding: 0 3mm;
+        border-radius: 50%;
+      } */
+    </style>
+  </head>
+  <body>
+    <main>
+      <div>
+        <img src="./resources/signin.png" alt="" />
+      </div>
+      <div>
+        <form id="myform">
+          <h3>LOG IN</h3>
+          <br /><br />
+          <label for="input">Enter your email id or phone number</label>
+          <input type="text" id="input" style="height: 30px;" required  />
+          <label for="password">Enter OTP</label>
+          <input type="password" id="password" style="height: 30px;"/>
+
+          <br />
+          <br />
+          <input
+            type="submit"
+            id="submit"
+            value="Login"
+            style="padding: 1.5%"
+          />
+        </form>
+        
+        <br />
+        
+        <button id="otp" style="padding: 1.5%">otp</button>
+      
+        <br />
+        <label>Are you new here? Please register first.</label>
+        <br />
+        <button id="register" style="padding: 1.5%">Register</button>
+      </div>
+    </main>
+  </body>
+</html>
+
+<script>
+  async function x(){
+  // var userData = JSON.parse(localStorage.getItem("userDataBase")) || [];
+  
+  await fetch("http://localhost:4500/user/get")
+  .then(res=>res.json())
+  .then((res)=>userData = res)
+  console.log(userData)
+
+
+  console.log("hello")
+  document
+    .getElementById("myform")
+    .addEventListener("submit",async function (event) {
+      event.preventDefault();
+      var input = document.getElementById("input").value;
+      var password = document.getElementById("password").value;
+      var flag = false;
+      if (input == "admin@gmail.com" && password == "pass") {
+        flag = true;
+        window.location.href = "./admin.html";
+      }
+
+      var count = 0;
+
+      for (var i = 0; i < userData.length; i++) {
+        if (input == userData[i].number ) {
+          flag = true;
+          console.log(input)
+          await fetch("http://localhost:4500/user/login",{
+            method:"POST",
+            headers:{"Content-type":"application/json"},
+            body:JSON.stringify({"number":input})
+          }).then((res)=>res.json()).then((res)=>{alert(res.otp)})
+          // localStorage.setItem("system", "online");
+          // localStorage.setItem("user", userData[i].username);
+          // ;
+        }
+      }
+      if (flag == false) {
+        alert("Wrong input please make sure you have typed right.");
+      }
+    });
+  document.getElementById("register").addEventListener("click", function () {
+    window.location.href = "./register.html";
+  });
+
+
+  var otp =   document.querySelector("#otp")
+otp.addEventListener("click",async ()=>{
+  try {
+    
+  var password = document.getElementById("password").value;
+console.log(password)
+    await fetch(`http://localhost:4500/user/login/${password}`,
+    {method:"POST",headers:{"Content-type":"application/json"}}).then((res)=>res.json()).then(res=>localStorage.setItem("token",res));
+    var input = document.getElementById("input").value;
+    localStorage.setItem("number",input)
+  } catch (error) {
+    console.log(error)
+  }
+  window.location.href = "./index.html";
+  alert("You are successfully logged in.")
+})
+
+}
+x()
+
+
+</script>

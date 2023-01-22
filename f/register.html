@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital@1&family=Roboto&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background-color: rgba(38, 164, 182, 0.2);
+        font-family: "Open Sans", sans-serif;
+
+        font-family: "Roboto", sans-serif;
+      }
+      main {
+        width: 55%; /*change later*/
+        height: 530px;
+        margin: 10vh auto;
+        background-color: white;
+        display: flex;
+        border-radius: 1%;
+        
+      }
+      main > div {
+        height: 100%;
+      }
+      main div img {
+        height: 100%;
+        border-radius: 3%;
+      }
+      main > div:nth-child(2) {
+        padding-left: 4%;
+        padding-top: 5%;
+        color: rgb(149, 149, 149);
+      }
+      main > div:nth-child(2) > form > h3 {
+        margin-bottom: 18px;
+      }
+      /* main > div:nth-child(2) > form > h3:hover {
+        color: rgb(38, 164, 182);
+        text-decoration: underline;
+      } */
+      main > div:nth-child(2) > form > label {
+        margin-bottom: 0;
+        display: block;
+      }
+      /* main > div:nth-child(2) > form > label:hover {
+        color: rgb(38, 164, 182);
+        font-size: 80%;
+      } */
+      main > div:nth-child(2) > form > input {
+        border: 0;
+        border-bottom: 1px solid rgb(149, 149, 149);
+        width: 100%; /*change accordingly*/
+        height: fit-content;
+        margin-top: 5px;
+        padding-top: 0;
+        margin-bottom: 7px;
+      }
+      /* main > div:nth-child(2) > form > input:hover {
+        border: 0px;
+        border-bottom: 2px solid rgb(38, 164, 182);
+        height: 150%;
+        margin-bottom: 10px;
+      } */
+      #submit {
+        background-color: rgba(255, 133, 81);
+        border: 0;
+        width: 100%;
+        height: 35px;
+        align-items: center;
+        border-radius: 5px;
+        font-size: 5mm;
+        cursor: pointer;
+        
+      }
+      #submit:hover {
+        background-color: rgba(255, 101, 94);
+      }
+      #signin {
+        background-color: rgba(255, 133, 81);
+        border: 0;
+        width: 100%;
+        height: 35px;
+        align-items: center;
+        border-radius: 5px;
+        font-size: 5mm;
+        cursor: pointer;
+      }
+      #signin:hover {
+        background-color: rgba(255, 101, 94);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div>
+        <img src="./resources/signin.png" alt="" />
+      </div>
+      <div>
+        <form id="myform">
+          <h3>REGISTER</h3>
+         
+          <label for="email">Enter your email id</label>
+          <input type="email" id="email" style="height: 20px;" required />
+          <label for="contact">Enter your phone number</label>
+          <input type="mobile" id="contact" style="height: 20px;" required />
+          <label for="name">Enter your name</label>
+          <input type="text" id="username" style="height: 20px;" required />
+          <label for="password">Enter your password</label>
+          <input type="password" id="password" style="height: 20px;" required />
+          <br />
+          <br />
+          <p>
+            By Registering you accept our
+            <a href="user-agreement.html">User Agreement and Privacy Policy</a>
+          </p>
+          <br />
+          <input
+            type="submit"
+            id="submit"
+            value="Register"
+            style="padding: 2%"
+          />
+        </form>
+        <br />
+        <label>Already registered??</label>
+        <br />
+        <br />
+        <button id="signin" style="padding: 1.5%">Sign In</button>
+      </div>
+    </main>
+  </body>
+</html>
+
+<script>
+  async function x(){
+    
+  var userData = [];
+  await fetch("http://localhost:4500/user/get")
+  .then(res=>res.json())
+  .then((res)=>userData = res)
+  console.log(userData)
+  document
+    .getElementById("myform")
+    .addEventListener("submit",async function (event) {
+      event.preventDefault();
+      var email = document.getElementById("email").value;
+      var number = document.getElementById("contact").value;
+      var username = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+
+      var userCred = {
+        email: email,
+        number: number,
+        username: username,
+        password: password,
+      };
+      var flag = false;
+      for (let i = 0; i < userData.length; i++) {
+        
+        if (userData[i].email == userCred.email) {
+          flag = true;
+          alert("Email is already registered. Please, login.");
+          window.location.href = "./login.html";
+        } else if (userData[i].number == userCred.number) {
+          flag = true;
+          alert("Mobile number is already registered. Please, login.");
+          window.location.href = "./login.html";
+        }
+      }
+      if (flag == false) {
+        
+        
+        console.log(userData)
+        await fetch("http://localhost:4500/user/register",{
+        method:"POST",
+        headers:{"Content-type":"application/json"},
+        body:JSON.stringify(userCred)
+        })
+        // localStorage.setItem("userDataBase", JSON.stringify(userData));
+        alert("You are successfully registered");
+        window.location.href = "./login.html";
+      }
+    });
+  document.getElementById("signin").addEventListener("click", function () {
+    window.location.href = "./login.html";
+  });
+}
+x()
+</script>

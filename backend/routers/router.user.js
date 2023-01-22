@@ -37,6 +37,16 @@ user_route.post("/register",async(req,res)=>{
     }
 })
 
+user_route.get("/get",async(req,res)=>{
+    try {
+        var data = await Usermodel.find()
+        res.send(data)
+    } catch (error) {
+        console.log(error);
+        res.send("something went wrong while getting data")
+    }
+})
+
 user_route.post("/register/:otp",async(req,res)=>{
     var user_otp = req.params.otp;
     console.log(user_otp)
@@ -107,10 +117,12 @@ user_route.post("/login/:id",async(req,res)=>{
             var token = jwt.sign(data[0].number,"masai")
             console.log(token)
             await Loginotpmodel.deleteMany()
-            res.send(`login successfull token:${token}`)
+            res.json(token)
         }
         else{
-            res.send("wrong otp")
+            await Loginotpmodel.deleteMany()
+            
+            res.json("wrong otp")
         }
     } catch (error) {
         res.send(error)

@@ -8,10 +8,10 @@ const user_product_route = express.Router()
 user_product_route.get("/homepage",async(req,res)=>{
     try {
         var data = await Productmodel.find()
-        res.send(data)
+        res.json(data)
     } catch (error) {
         console.log(error);
-        res.send("something went wrong while requesting home page")
+        res.json("something went wrong while requesting home page")
     }
 })
 
